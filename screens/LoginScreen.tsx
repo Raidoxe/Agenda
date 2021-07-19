@@ -1,6 +1,6 @@
 import * as React from "react";
 import styles from "../Styling/styles";
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import GoogleImage from '../components/images/Google';
 import * as Google from 'expo-auth-session/providers/google';
 import firebase from 'firebase/app';
@@ -18,15 +18,13 @@ const LoginScreen: React.FC<{}> = () => {
             firebase.auth().signInWithCredential(credential);
         }
     }, [response]);
-    
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => promptAsync()}>
-                <View style={styles.GoogleButton} >
-                    <GoogleImage style={styles.Google} />
-                    <View style={styles.TextContainer}>
-                        <Text style={styles.Login}>Login With Google</Text>
-                    </View>
+            <TouchableOpacity onPress={() => promptAsync()} style={styles.GoogleButton}>
+                <GoogleImage style={styles.Google} />
+                <View style={styles.TextContainer}>
+                    <Text style={styles.Login}>Login With Google</Text>
                 </View>
             </TouchableOpacity>
         </View>

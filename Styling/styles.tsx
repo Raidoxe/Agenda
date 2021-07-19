@@ -1,4 +1,6 @@
+import { forSlideRight } from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/HeaderStyleInterpolators';
 import { StyleSheet } from 'react-native';
+import DashboardScreen from '../screens/DashboardScreen';
 
 export default StyleSheet.create({
     container: {
@@ -29,5 +31,17 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     maxWidth: 150
+  },
+  userPhoto: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    position: 'absolute',
+    right: 10,
+    top: 10
+  },
+  DashboardScreen: {
+  },
+  photoHeader: {
   }
 });

@@ -1,14 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import firebase from 'firebase/app';
 import "firebase/auth";
-import { createSwitchNavigator, createAppContainer } from 'react-navigation'; 
-import styles from "./Styling/styles";
-import LoadingScreen from './screens/LoadingScreen'
 import LoginScreen from './screens/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useEffect } from 'react';
+import LoadingScreen from './screens/LoadingScreen';
+import UserContext from './context/UserContext';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAHfTL41XLhciCMFf5N3pLrsrifql4H5Rc",
@@ -26,22 +25,50 @@ if (!firebase.apps.length) {
   firebase.app(); // if already initialized, use that one
 }
 
-export default function App() {
-  const AppSwitchNavigator = createSwitchNavigator({
-    LoadingScreen: LoadingScreen,
-    LoginScreen: LoginScreen,
-    DashboardScreen: DashboardScreen
-  });
-  
-  const AppNavigator = createAppContainer(AppSwitchNavigator);
+const Stack = createStackNavigator();
 
-  React.useEffect(() => {
+export default function App() {
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [authenticated, setAuthenticated] = React.useState<boolean>(false);
+  const [user, setUser] = React.useState<firebase.User | null>(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {//If user not logged in will redirect to login screen
+      if (user) {
+        console.log(user);
+        setAuthenticated(true);
+        setIsLoading(false);
+        setUser(user);
+      } else {
+        setAuthenticated(false);
+        setIsLoading(false);
+      }
+    });
+
+    return () => { };
   }, []);
 
 
-  return (
-    <AppNavigator />
-  );
+
+  if (authenticated) {
+    return (
+      <UserContext.Provider value={user}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Dashboard">
+            <Stack.Screen name="Dashboard" component={DashboardScreen}/>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </UserContext.Provider>
+    )
+  } else {
+    return (
+      <NavigationContainer>
+        < Stack.Navigator>
+          {isLoading ?  <Stack.Screen name="Loading" component={LoadingScreen}/> : <Stack.Screen name="Login" component={LoginScreen} />}
+        </Stack.Navigator >
+      </NavigationContainer >
+    )
+  }
 }
 
 
