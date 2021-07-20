@@ -3,6 +3,7 @@ import styles from "../Styling/styles";
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 import firebase from 'firebase/app';
 import UserContext from '../context/UserContext';
+import Feed from "../components/Feed";
 
 
 
@@ -27,6 +28,7 @@ const DashboardScreen: React.FC<{}> = () => {
             <TouchableOpacity onPress={logoutUser}>
                 <Text>Logout</Text>
             </TouchableOpacity>
+            <Feed />
         </View>
     )
 }
