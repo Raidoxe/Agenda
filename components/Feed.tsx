@@ -19,7 +19,7 @@ const Feed: React.FC<{}> = () => {
     const [events, setEvents] = React.useState<Array<Event> | null>(null);
 
     useEffect(() => {
-        if(user) {
+        /*if(user) {
             axios.get(`{SERVERURL}/getUserFeed?userid=${user.uid}`).then(res => {
                 if(res.data.type === Event) {
                     setEvents(res.data);
@@ -29,7 +29,7 @@ const Feed: React.FC<{}> = () => {
                 }
                 
             })  
-        }
+        }*/
         return () => {}
     }, [user, setEvents])
 

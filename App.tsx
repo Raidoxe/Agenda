@@ -39,6 +39,7 @@ export default function App() {
         setAuthenticated(true);
         setIsLoading(false);
         setUser(user);
+        user.getIdToken().then(token => console.log(token));
       } else {
         setAuthenticated(false);
         setIsLoading(false);
